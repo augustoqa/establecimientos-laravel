@@ -49957,7 +49957,17 @@ document.addEventListener('DOMContentLoaded', function () {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapa);
     var marker;
-    marker = new L.marker([lat, lng]).addTo(mapa);
+    marker = new L.marker([lat, lng], {
+      draggable: true,
+      autoPan: true
+    }).addTo(mapa); // Detectar movimiento del marker
+
+    marker.on('moveend', function (e) {
+      marker = e.target;
+      var posicion = marker.getLatLng(); // Centrar automáticamente
+
+      mapa.panTo(new L.LatLng(posicion.lat, posicion.lng));
+    });
   }
 });
 
