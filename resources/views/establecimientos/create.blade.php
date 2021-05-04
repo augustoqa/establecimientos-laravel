@@ -93,6 +93,46 @@
                         <div id="mapa" style="height: 400px"></div>
                     </div>
 
+                    <p class="informacion">Confirma que los siguientes campos son correctos</p>
+
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+
+                        <input
+                            type="text"
+                            id="direccion"
+                            class="form-control @error('direccion') is-invalid @enderror"
+                            placeholder="Dirección"
+                            value="{{ old('direccion') }}"
+                        >
+
+                        @error('direccion')
+                        <div class="invalid-feedback">
+                            {{ $messsage }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colonia">Colonia</label>
+
+                        <input
+                            type="text"
+                            id="direccion"
+                            class="form-control @error('colonia') is-invalid @enderror"
+                            placeholder="Colonia"
+                            value="{{ old('colonia') }}"
+                        >
+
+                        @error('colonia')
+                        <div class="invalid-feedback">
+                            {{ $messsage }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <input type="hidden" name="lat" id="lat" value="{{ old('lat') }}">
+                    <input type="hidden" name="lng" id="lng" value="{{ old('lng') }}">
                 </fieldset>
             </form>
         </div>
