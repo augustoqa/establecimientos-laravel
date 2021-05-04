@@ -49823,6 +49823,8 @@ var app = new Vue({
   el: '#app'
 });
 
+__webpack_require__(/*! ./mapa */ "./resources/js/mapa.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -49936,6 +49938,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/mapa.js":
+/*!******************************!*\
+  !*** ./resources/js/mapa.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.querySelector('#mapa')) {
+    var lat = 14.646617585370924;
+    var lng = -90.73711863119946;
+    var mapa = L.map('mapa').setView([lat, lng], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mapa);
+    var marker;
+    marker = new L.marker([lat, lng]).addTo(mapa);
+  }
+});
 
 /***/ }),
 
