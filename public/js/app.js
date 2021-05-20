@@ -49952,21 +49952,29 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.querySelector('#mapa')) {
     var lat = 14.646617585370924;
     var lng = -90.73711863119946;
+    var apiKey = 'AAPKbb8ab896f06247c1a39b5808cec5262bQOrmHf38KE7jeFqkHpRB4AjAqnmLK-Cun_UB36LJcn_KbZHHYbcD1w2i1x6sSNQj';
     var mapa = L.map('mapa').setView([lat, lng], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapa);
-    var marker;
-    marker = new L.marker([lat, lng], {
+    var geocodeService = L.esri.Geocoding.geocodeService({
+      apikey: apiKey
+    });
+    var marker = new L.marker([lat, lng], {
       draggable: true,
       autoPan: true
-    }).addTo(mapa); // Detectar movimiento del marker
-
+    }).addTo(mapa);
     marker.on('moveend', function (e) {
       marker = e.target;
-      var posicion = marker.getLatLng(); // Centrar automáticamente
+      var position = marker.getLatLng(); // Centrar automáticamente
 
-      mapa.panTo(new L.LatLng(posicion.lat, posicion.lng));
+      mapa.panTo(new L.LatLng(position.lat, position.lng)); // Reverse Geocoding cuando el usuario reubica el pin
+
+      geocodeService.reverse().latlng(position, 16).run(function (error, result) {
+        // console.log(error);
+        console.log(result.address);
+        marker.bindPopup(result.address.LongLabel).openPopup();
+      });
     });
   }
 });

@@ -3,27 +3,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const lat = 14.646617585370924
         const lng = -90.73711863119946
 
-        const mapa = L.map('mapa').setView([lat, lng], 16)
+        const apiKey = 'AAPKbb8ab896f06247c1a39b5808cec5262bQOrmHf38KE7jeFqkHpRB4AjAqnmLK-Cun_UB36LJcn_KbZHHYbcD1w2i1x6sSNQj';
+
+        const mapa = L.map('mapa').setView([lat, lng], 16);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mapa)
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mapa);
 
-        let marker;
+        const geocodeService = L.esri.Geocoding.geocodeService({
+            apikey: apiKey
+        });
 
-        marker = new L.marker([lat, lng], {
+        let marker = new L.marker([lat, lng], {
             draggable: true,
-            autoPan: true
-        }).addTo(mapa)
+            autoPan: true,
+        }).addTo(mapa);
 
-        // Detectar movimiento del marker
         marker.on('moveend', function (e) {
             marker = e.target;
 
-            const posicion = marker.getLatLng()
+            const position = marker.getLatLng()
 
             // Centrar automáticamente
-            mapa.panTo(new L.LatLng(posicion.lat, posicion.lng))
+            mapa.panTo(new L.LatLng(position.lat, position.lng))
+
+            // Reverse Geocoding cuando el usuario reubica el pin
+            geocodeService.reverse().latlng(position, 16).run(function (error, result) {
+                // console.log(error);
+
+                console.log(result.address)
+
+                marker.bindPopup(result.address.LongLabel).openPopup()
+            })
         })
     }
 })
