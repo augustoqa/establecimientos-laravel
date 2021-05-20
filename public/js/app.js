@@ -49950,6 +49950,13 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', function () {
   if (document.querySelector('#mapa')) {
+    var llenarInputs = function llenarInputs(resultado) {
+      document.querySelector('#direccion').value = resultado.address.Address || '';
+      document.querySelector('#colonia').value = resultado.address.Neighborhood || '';
+      document.querySelector('#lat').value = resultado.latlng.lat || '';
+      document.querySelector('#lng').value = resultado.latlng.lng || '';
+    };
+
     var lat = 14.646617585370924;
     var lng = -90.73711863119946;
     var apiKey = 'AAPKbb8ab896f06247c1a39b5808cec5262bQOrmHf38KE7jeFqkHpRB4AjAqnmLK-Cun_UB36LJcn_KbZHHYbcD1w2i1x6sSNQj';
@@ -49971,9 +49978,8 @@ document.addEventListener('DOMContentLoaded', function () {
       mapa.panTo(new L.LatLng(position.lat, position.lng)); // Reverse Geocoding cuando el usuario reubica el pin
 
       geocodeService.reverse().latlng(position, 16).run(function (error, result) {
-        // console.log(error);
-        console.log(result.address);
         marker.bindPopup(result.address.LongLabel).openPopup();
+        llenarInputs(result);
       });
     });
   }

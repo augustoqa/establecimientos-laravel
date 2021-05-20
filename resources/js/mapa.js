@@ -30,12 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Reverse Geocoding cuando el usuario reubica el pin
             geocodeService.reverse().latlng(position, 16).run(function (error, result) {
-                // console.log(error);
-
-                console.log(result.address)
-
                 marker.bindPopup(result.address.LongLabel).openPopup()
+
+                llenarInputs(result)
             })
         })
+
+        function llenarInputs(resultado) {
+            document.querySelector('#direccion').value = resultado.address.Address || '';
+            document.querySelector('#colonia').value = resultado.address.Neighborhood || '';
+            document.querySelector('#lat').value = resultado.latlng.lat || '';
+            document.querySelector('#lng').value = resultado.latlng.lng || '';
+        }
     }
 })

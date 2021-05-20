@@ -90,7 +90,7 @@
                             class="form-control"
                         >
                         <p class="text-secondary mt-5 mb-3 text-center">
-                            El asistente colocará una dirección estimada, mueve el Pin hacia el lugar correcto
+                            El asistente colocará una dirección estimada o mueve el Pin hacia el lugar correcto
                         </p>
                     </div>
 
@@ -123,7 +123,7 @@
 
                         <input
                             type="text"
-                            id="direccion"
+                            id="colonia"
                             class="form-control @error('colonia') is-invalid @enderror"
                             placeholder="Colonia"
                             value="{{ old('colonia') }}"
