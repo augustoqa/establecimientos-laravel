@@ -1,3 +1,5 @@
+const provider = new GeoSearch.OpenStreetMapProvider();
+
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('#mapa')) {
         const lat = 14.646617585370924
@@ -20,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             autoPan: true,
         }).addTo(mapa);
 
+        const buscador = document.querySelector('#formbuscador');
+        buscador.addEventListener('blur', buscarDireccion);
+
         marker.on('moveend', function (e) {
             marker = e.target;
 
@@ -35,6 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 llenarInputs(result)
             })
         })
+
+        function buscarDireccion(e) {
+            if (e.target.value.length > 1) {
+                provider.search({query: e.target.value + ' Sumpango GT'})
+                    .then(resultado => {
+                        if (resultado[0]) {
+                            // Reverse Geocoding cuando el usuario reubica el pin
+                            geocodeService.reverse().latlng(resultado[0].bounds[0], 16).run(function (error, result) {
+                                // marker.bindPopup(result.address.LongLabel).openPopup()
+                                //
+                                // llenarInputs(result)
+                                console.log(resultado)
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            }
+        }
 
         function llenarInputs(resultado) {
             document.querySelector('#direccion').value = resultado.address.Address || '';

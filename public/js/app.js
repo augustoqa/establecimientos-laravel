@@ -49948,8 +49948,29 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+var provider = new GeoSearch.OpenStreetMapProvider();
 document.addEventListener('DOMContentLoaded', function () {
   if (document.querySelector('#mapa')) {
+    var buscarDireccion = function buscarDireccion(e) {
+      if (e.target.value.length > 1) {
+        provider.search({
+          query: e.target.value + ' Sumpango GT'
+        }).then(function (resultado) {
+          if (resultado[0]) {
+            // Reverse Geocoding cuando el usuario reubica el pin
+            geocodeService.reverse().latlng(resultado[0].bounds[0], 16).run(function (error, result) {
+              // marker.bindPopup(result.address.LongLabel).openPopup()
+              //
+              // llenarInputs(result)
+              console.log(resultado);
+            });
+          }
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    };
+
     var llenarInputs = function llenarInputs(resultado) {
       document.querySelector('#direccion').value = resultado.address.Address || '';
       document.querySelector('#colonia').value = resultado.address.Neighborhood || '';
@@ -49971,6 +49992,8 @@ document.addEventListener('DOMContentLoaded', function () {
       draggable: true,
       autoPan: true
     }).addTo(mapa);
+    var buscador = document.querySelector('#formbuscador');
+    buscador.addEventListener('blur', buscarDireccion);
     marker.on('moveend', function (e) {
       marker = e.target;
       var position = marker.getLatLng(); // Centrar automáticamente
